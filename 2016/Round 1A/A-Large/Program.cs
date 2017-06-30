@@ -51,37 +51,7 @@ class Program
     {
         char[,] Result = new char[Input.GetLength(0), Input.GetLength(1)];
 
-        // Ensure each row has all full or all ?
-        for (int i = 0; i < Input.GetLength(0); i++)
-        {
-            int FirstChar = 0;
-            while (Input[i, FirstChar] == '?')
-            {
-                FirstChar++;
-                if (FirstChar >= Input.GetLength(1))
-                {
-                    FirstChar = 0;
-                    break;
-                }
-            }
-            for (int j = 0; j < FirstChar; j++)
-            {
-                Result[i, j] = Input[i, FirstChar];
-            }
-            int LastChar = FirstChar;
-            for (int j = FirstChar; j < Input.GetLength(1); j++)
-            {
-                if (Input[i, j] == '?' || Input[i, j] == Input[i, LastChar])
-                {
-                    Result[i, j] = Input[i, LastChar];
-                }
-                else
-                {
-                    LastChar = j;
-                    Result[i, j] = Input[i, LastChar];
-                }
-            }
-        }
+        EnsureRowFullness(Input, Result);
         // Now copy each row, first case
         int FirstLine = 0;
         while (Result[FirstLine, 0] == '?')
@@ -116,6 +86,41 @@ class Program
             }
         }
         return Result;
+    }
+
+    // Ensure each row has all full or all ?
+    static void EnsureRowFullness(char[,] Input, char[,] Result)
+    {
+        for (int i = 0; i < Input.GetLength(0); i++)
+        {
+            int FirstCharIndex = 0;
+            while (Input[i, FirstCharIndex] == '?')
+            {
+                FirstCharIndex++;
+                if (FirstCharIndex >= Input.GetLength(1))
+                {
+                    FirstCharIndex = 0;
+                    break;
+                }
+            }
+            for (int j = 0; j < FirstCharIndex; j++)
+            {
+                Result[i, j] = Input[i, FirstChar];
+            }
+            int LastChar = FirstCharIndex;
+            for (int j = FirstCharIndex; j < Input.GetLength(1); j++)
+            {
+                if (Input[i, j] == '?' || Input[i, j] == Input[i, LastChar])
+                {
+                    Result[i, j] = Input[i, LastChar];
+                }
+                else
+                {
+                    LastChar = j;
+                    Result[i, j] = Input[i, LastChar];
+                }
+            }
+        }
     }
 
     static void Print2DArray(char[,] arr)
